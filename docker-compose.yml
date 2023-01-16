@@ -9,7 +9,7 @@ services:
     - traefik
 
   pokedex-back:
-    image: registry.simco.fr/simco/pokedex-back:docker
+    image: pokedex
     environment:
       - POSTGRES_HOST=postgresql
       - POSTGRES_PORT=5432
@@ -25,8 +25,13 @@ services:
       - traefik.http.routers.pokedex-back-devio.tls=true
       - traefik.http.routers.pokedex-back-devio.rule=Host(`pokedexbe.dev.simco.io`)
       - traefik.http.services.pokedex-back-devio.loadbalancer.server.port=8030
+    volumes:
+      - /app
+      - /Users/mykola/Desktop/pokedex
+    ports:
+      - '8030:8030'
 
 networks:
   traefik:
     name: traefik-devio
-    external: true
+
