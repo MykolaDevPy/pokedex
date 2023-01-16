@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from pokedex.models import PokedexCreature
-
+from favorite_object.models import FavoriteObject
 
 class Pokemon(models.Model):
     """Pokemon object"""
@@ -23,6 +23,11 @@ class Pokemon(models.Model):
         max_length=100,
         blank=True,
         null=True,
+    )
+
+    favorite_object = models.ForeignKey(
+            FavoriteObject,
+            on_delete=models.CASCADE,
     )
 
     level = models.PositiveSmallIntegerField(default=1)
