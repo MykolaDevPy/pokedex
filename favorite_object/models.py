@@ -2,8 +2,6 @@ from django.db import models
 
 
 class FavoriteObject(models.Model):
-  """Favorite objects for pokemon"""
-  
   name = models.CharField(
       max_length=30,
       blank=False,
@@ -18,8 +16,3 @@ class FavoriteObject(models.Model):
     blank=False,
     null=False,
   )
-
-  def __str__(self):
-    """Return the name of object and its description"""
-
-    return f"{self.name} : {self.description}"
