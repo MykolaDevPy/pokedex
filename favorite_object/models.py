@@ -8,7 +8,9 @@ class FavoriteObject(models.Model):
         null=False,
     )
 
-    img_url = models.URLField()
+    img_url = models.URLField(
+        blank=True,
+    )
 
     description = models.TextField(
         max_length=250,

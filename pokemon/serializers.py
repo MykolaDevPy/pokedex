@@ -1,11 +1,8 @@
-from random import random
-
 from rest_framework import serializers
 
 from .models import Pokemon
 from authentication.serializers import UserSerializer
-from favorite_object.models import FavoriteObject
-from favorite_object.serializers import FavoriteObjectSerializer
+from favorite_object.serializers import FavoriteObjectDetailSerializer
 from pokedex.serializers import PokedexCreatureDetailSerializer
 
 
@@ -21,21 +18,20 @@ class PokemonSerializer(serializers.ModelSerializer):
             "nickname",
             "level",
             "experience",
+            "favorite_object",
         )
         read_only_fields = (
             "id",
             "level",
+            "favorite_object",
         )
 
     def validate(self, attrs):
-        """Add pokemon nickname if no nickname is given and add favorite object"""
+        """Add pokemon nickname if no nickname is given"""
         nickname = attrs.get("nickname")
         pokedex_creature = attrs.get("pokedex_creature")
         if not nickname:
             attrs["nickname"] = pokedex_creature.name
-
-        fav_object = FavoriteObject.objects.all()
-        attrs["favorite_object"] = random.choice(fav_object)
 
         return super().validate(attrs)
 
@@ -43,8 +39,7 @@ class PokemonSerializer(serializers.ModelSerializer):
 class PokemonDetailsSerializer(serializers.ModelSerializer):
     pokedex_creature = PokedexCreatureDetailSerializer()
     trainer = UserSerializer()
-    # favorite_object added
-    favorite_object = FavoriteObjectSerializer()
+    favorite_object = FavoriteObjectDetailSerializer()
 
     class Meta:
         model = Pokemon

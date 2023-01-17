@@ -1,10 +1,8 @@
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .models import FavoriteObject
 from .serializers import FavoriteObjectDetailSerializer
@@ -17,7 +15,7 @@ from .serializers import FavoriteObjectSerializer
         description="API endpoint to retrieve specific object and see its details information."
     ),
 )
-class FavoriteObjectViewSet(ModelViewSet):
+class FavoriteObjectViewSet(ReadOnlyModelViewSet):
     # give an access to the authenticated users
     permission_classes = (IsAuthenticated,)
 

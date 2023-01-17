@@ -7,7 +7,7 @@ from .views import FavoriteObjectViewSet
 app_name = "favorite_object"
 
 router = DefaultRouter()
-router.register("", FavoriteObjectViewSet, basename="favorite-objects")
+router.register("", FavoriteObjectViewSet, basename="favorite-object")
 
 
 urlpatterns = [

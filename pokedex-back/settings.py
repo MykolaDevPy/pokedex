@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "authentication",
-    "pokedex",
     "favorite_object",
+    "pokedex",
     "pokemon",
 ]
 

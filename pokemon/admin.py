@@ -10,7 +10,7 @@ class PokemonAdmin(admin.ModelAdmin):
     search_fields = ("nickname", "trainer__username")
     list_per_page = 50
 
-    autocomplete_fields = ("pokedex_creature", "trainer", "favorite_object")
+    autocomplete_fields = ("pokedex_creature", "trainer")
 
 
 admin.site.register(Pokemon, PokemonAdmin)

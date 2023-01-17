@@ -20,13 +20,6 @@ class Pokemon(models.Model):
         null=True,
     )
 
-    favorite_object = models.ForeignKey(
-        FavoriteObject,
-        on_delete=models.CASCADE,
-        # default=None in case if in database there are some objects
-        default=None,
-    )
-
     nickname = models.CharField(
         max_length=100,
         blank=True,
@@ -35,6 +28,8 @@ class Pokemon(models.Model):
 
     level = models.PositiveSmallIntegerField(default=1)
     experience = models.PositiveIntegerField(default=0)
+
+    favorite_object = models.ForeignKey(FavoriteObject, on_delete=models.CASCADE)
 
     def clean(self):
         """
