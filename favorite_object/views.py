@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .models import FavoriteObject
+from .serializers import FavoriteObjectDetailSerializer
 from .serializers import FavoriteObjectSerializer
 
 
@@ -25,3 +26,13 @@ class FavoriteObjectViewSet(ModelViewSet):
 
     # serializer class
     serializer_class = FavoriteObjectSerializer
+
+    def get_serializer_class(self):
+        """Return appropriate serializer class"""
+
+        if self.action == "list":
+            return FavoriteObjectSerializer
+        elif self.action == "retrieve":
+            return FavoriteObjectDetailSerializer
+
+        return super().get_serializer_class()

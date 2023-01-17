@@ -34,7 +34,6 @@ class PokemonSerializer(serializers.ModelSerializer):
         if not nickname:
             attrs["nickname"] = pokedex_creature.name
 
-        #
         fav_object = FavoriteObject.objects.all()
         attrs["favorite_object"] = random.choice(fav_object)
 

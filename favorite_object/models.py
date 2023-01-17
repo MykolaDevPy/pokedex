@@ -15,3 +15,6 @@ class FavoriteObject(models.Model):
         blank=False,
         null=False,
     )
+
+    def __str__(self):
+        return f"{self.name} : {self.description}"

@@ -9,6 +9,7 @@ app_name = "favorite_object"
 router = DefaultRouter()
 router.register("", FavoriteObjectViewSet, basename="favorite-objects")
 
+
 urlpatterns = [
     path("", include(router.urls)),
 ]
