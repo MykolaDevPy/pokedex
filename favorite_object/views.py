@@ -1,3 +1,27 @@
-from django.shortcuts import render
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema_view
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+from .models import FavoriteObject
+from .serializers import FavoriteObjectSerializer
+
+
+@extend_schema_view(
+    list=extend_schema(description="API endpoint to get a list of objects"),
+    retrieve=extend_schema(
+        description="API endpoint to retrieve specific object and see its details information."
+    ),
+)
+class FavoriteObjectViewSet(ModelViewSet):
+    # give an access to the authenticated users
+    permission_classes = (IsAuthenticated,)
+
+    # get a list of objects ordered by name
+    queryset = FavoriteObject.objects.all().order_by("name")
+
+    # serializer class
+    serializer_class = FavoriteObjectSerializer

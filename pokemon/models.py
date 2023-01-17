@@ -21,8 +21,10 @@ class Pokemon(models.Model):
     )
 
     favorite_object = models.ForeignKey(
-            FavoriteObject,
-            on_delete=models.CASCADE,
+        FavoriteObject,
+        on_delete=models.CASCADE,
+        # default=None in case if in database there are some objects
+        default=None,
     )
 
     nickname = models.CharField(
