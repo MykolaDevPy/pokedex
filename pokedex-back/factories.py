@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
 from pytest_factoryboy import register
 
+from favorite_object.models import FavoriteObject
 from pokedex.models import PokedexCreature
 from pokemon.models import Pokemon
 
@@ -34,6 +35,30 @@ class PokedexCreatureFactory(DjangoModelFactory):
     legendary = False
 
 
+class FavoriteObjectFactory(DjangoModelFactory):
+    """Generator of FavoriteObject objects"""
+
+    class Meta:
+        model = FavoriteObject
+
+    name = sample(["Attaque +", "Baie Fraive", "Veste de Combat"], 1)
+    imd_url = sample(
+        [
+            "https://www.pokemontrash.com/pokedex/images/items/safety-goggles.png",
+            "https://www.pokemontrash.com/pokedex/images/items/assault-vest.png",
+            "https://www.pokemontrash.com/pokedex/images/items/leftovers.png",
+        ],
+        1,
+    )
+    description = sample(
+        [
+            "Objet à tenir augmentant la puissance des attaques immobilisantes telles que Ligotage ou Étreinte.",
+            "Objet à tenir qui annule l’attirance d’un Pokémon. Ne peut être utilisé qu’une fois.",
+        ],
+        1,
+    )
+
+
 class PokemonFactory(DjangoModelFactory):
     """Generator of PokedexCreature objects"""
 
@@ -43,6 +68,7 @@ class PokemonFactory(DjangoModelFactory):
     pokedex_creature = factory.SubFactory(PokedexCreatureFactory)
     level = 1
     experience = 0
+    favorite_object = factory.SubFactory(FavoriteObjectFactory)
 
     @factory.post_generation
     def clean(obj, create, extracted, **kwargs):
@@ -64,5 +90,6 @@ class UserFactory(DjangoModelFactory):
 
 
 register(PokedexCreatureFactory)
+register(FavoriteObjectFactory)
 register(PokemonFactory)
 register(UserFactory)

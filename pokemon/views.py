@@ -32,7 +32,7 @@ from .serializers import PokemonSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     queryset = Pokemon.objects.all().order_by("pokedex_creature__ref_number")
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter

@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_PASSWORD: 8Fny?aXEFkh9ePA3
     networks:
-    - traefik
+    - infra
 
   pokedex-back:
     image: pokedex
@@ -16,22 +16,12 @@ services:
       - DJANGO__POSTGRES_HOST=postgresql
       - DJANGO__int__POSTGRES_PORT=5432
     networks:
-    - traefik
-    deploy:
-      labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-devio
-      - traefik.http.routers.pokedex-back-devio.entrypoints=websecure
-      - traefik.http.routers.pokedex-back-devio.tls=true
-      - traefik.http.routers.pokedex-back-devio.rule=Host(`pokedexbe.dev.simco.io`)
-      - traefik.http.services.pokedex-back-devio.loadbalancer.server.port=8030
-    volumes:
-      - /app
-      - /Users/mykola/Desktop/pokedex
+    - infra
+    depends_on:
+      - postgresql
     ports:
       - '8030:8030'
 
 networks:
-  traefik:
-    name: traefik-devio
-
+  infra:
+    name: infra-devio
