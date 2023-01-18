@@ -2,12 +2,12 @@ from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema_view
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .filters import PokemonFilter
 from .models import Pokemon
+from .permissions import IsOwner
 from .serializers import PokemonDetailsSerializer
 from .serializers import PokemonGiveXPSerializer
 from .serializers import PokemonSerializer
@@ -32,10 +32,18 @@ from .serializers import PokemonSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Pokemon.objects.all().order_by("pokedex_creature__ref_number")
+    permission_classes = (IsOwner,)
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
+
+    def get_queryset(self):
+        """Return the queryset of Pokemon instances based on their trainer"""
+        if self.request.user.is_superuser:
+            return Pokemon.objects.all().order_by("pokedex_creature__ref_number")
+        elif self.request.user.is_anonymous:
+            return Pokemon.objects.none()
+
+        return Pokemon.objects.filter(trainer=self.request.user.pk)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
