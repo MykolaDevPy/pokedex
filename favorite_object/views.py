@@ -34,7 +34,7 @@ class FavoriteObjectViewSet(ReadOnlyModelViewSet):
 
         if self.action == "list":
             return FavoriteObjectSerializer
-        """elif self.action == "retrieve":
-            return FavoriteObjectDetailSerializer"""
+        elif self.action == "retrieve":
+            return FavoriteObjectDetailSerializer
 
         return super().get_serializer_class()
