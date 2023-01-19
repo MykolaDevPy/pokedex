@@ -2,6 +2,7 @@ from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema_view
 from rest_framework.viewsets import ModelViewSet
 
+from .models import Team
 from .filters import TeamsFilterSet
 from .permissions import IsOwner
 from .serializers import TeamSerializer
@@ -28,5 +29,5 @@ class TeamViewSet(ModelViewSet):
         """Return the queryset of Teams instances based on user permissions."""
 
         if self.request.user.is_superuser:
-            return TeamViewSet.objects.all().order_by("name")
-        return TeamViewSet.objects.filter(trainer=self.request.user.pk).order_by("name")
+            return Team.objects.all().order_by("name")
+        return Team.objects.filter(trainer=self.request.user.pk).order_by("name")

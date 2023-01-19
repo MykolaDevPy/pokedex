@@ -36,7 +36,7 @@ class Pokemon(models.Model):
     experience = models.PositiveIntegerField(default=0)
 
     favorite_object = models.ForeignKey(
-        FavoriteObject, on_delete=models.CASCADE, default=get_random_object
+        FavoriteObject, on_delete=models.SET_NULL, null=True, default=get_random_object
     )
 
     team = models.ForeignKey(
@@ -44,6 +44,8 @@ class Pokemon(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        default=None,
+        related_name='pokemon_team',
     )
 
     def clean(self):

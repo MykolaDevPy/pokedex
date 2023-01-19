@@ -4,7 +4,7 @@ from .models import Pokemon
 from authentication.serializers import UserSerializer
 from favorite_object.serializers import FavoriteObjectDetailSerializer
 from pokedex.serializers import PokedexCreatureDetailSerializer
-from teams.serializers import TeamSerializer
+from teams.serializers import TeamDetailsSerializer
 
 
 class PokemonSerializer(serializers.ModelSerializer):
@@ -26,6 +26,7 @@ class PokemonSerializer(serializers.ModelSerializer):
             "id",
             "level",
             "favorite_object",
+            "team",
         )
 
     def validate(self, attrs):
@@ -42,7 +43,7 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
     pokedex_creature = PokedexCreatureDetailSerializer()
     trainer = UserSerializer()
     favorite_object = FavoriteObjectDetailSerializer()
-    team = TeamSerializer()
+    team = TeamDetailsSerializer()
 
     class Meta:
         model = Pokemon
@@ -53,6 +54,13 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
             "experience",
             "pokedex_creature",
             "trainer",
+            "favorite_object",
+            "team",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
             "favorite_object",
             "team",
         )
