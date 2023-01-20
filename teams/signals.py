@@ -1,5 +1,5 @@
-from django.db.models.signals import post_save
 from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
@@ -10,90 +10,41 @@ from pokemon.models import Pokemon
 @receiver(pre_save, sender=Team)
 def verify_ownership(sender, instance, **kwargs):
     """Verify ownership of a given instance before saving."""
+    pokemons = [
+        instance.pokemon_1_id,
+        instance.pokemon_2_id,
+        instance.pokemon_3_id,
+        instance.pokemon_4_id,
+        instance.pokemon_5_id,
+    ]
 
-    try:
-        pokemon = Pokemon.objects.get(pk=instance.pokemon_1_id)
-        if pokemon.trainer == instance.trainer:
-            instance.pokemon_1 = pokemon
-        else:
-            instance.pokemon_1 = None
-    except Pokemon.DoesNotExist:
-        instance.pokemon_1 = None
+    pokemons.sort(key=lambda x: x != None)
 
-    if instance.pokemon_2_id:
-        try:
-            pokemon = Pokemon.objects.get(pk=instance.pokemon_2_id)
-            if pokemon.trainer == instance.trainer:
-                instance.pokemon_2 = pokemon
-            else:
-                instance.pokemon_2 = None
-        except Pokemon.DoesNotExist:
-            instance.pokemon_2 = None
-
-    if instance.pokemon_3_id:
-        try:
-            pokemon = Pokemon.objects.get(pk=instance.pokemon_3_id)
-            if pokemon.trainer == instance.trainer:
-                instance.pokemon_3 = pokemon
-            else:
-                instance.pokemon_3 = None
-        except Pokemon.DoesNotExist:
-            instance.pokemon_3 = None
-    
-    if instance.pokemon_4_id:
-        try:
-            pokemon = Pokemon.objects.get(pk=instance.pokemon_4_id)
-            if pokemon.trainer == instance.trainer:
-                instance.pokemon_4 = pokemon
-            else:
-                instance.pokemon_4 = None
-        except Pokemon.DoesNotExist:
-            instance.pokemon_4 = None
-    
-    if instance.pokemon_5_id:
-        try:
-            pokemon = Pokemon.objects.get(pk=instance.pokemon_5_id)
-            if pokemon.trainer == instance.trainer:
-                instance.pokemon_5 = pokemon
-            else:
-                instance.pokemon_5 = None
-        except Pokemon.DoesNotExist:
-            instance.pokemon_5 = None
+    for i, pokemon in enumerate(pokemons):
+        setattr(instance, f"pokemon_{i+1}", pokemon)
 
 
 @receiver(post_save, sender=Team)
 def assign_to_team(sender, instance, created, **kwargs):
     """Updating the information about team in Pokemon instance."""
+    pokemons = []
 
-    if created:
-        pokemons = []
-
-        for i in range(1,6):
-            poke_field = 'pokemon_' + str(i)
-            if getattr(instance, poke_field):
-                pokemons.append(Pokemon.objects.get(pk=getattr(instance, poke_field).id))
-
-        for pokemon in pokemons:
-            pokemon.team = instance
-            pokemon.save()
+    for i in range(1, 6):
+        poke_field = "pokemon_" + str(i)
+        if getattr(instance, poke_field):
+            pokemons.append(Pokemon.objects.get(pk=getattr(instance, poke_field).id))
 
     if not created:
-        pokemons = []
         prev_pokemons = Pokemon.objects.filter(team=instance)
 
-        for i in range(1,6):
-            poke_field = 'pokemon_' + str(i)
-            if getattr(instance, poke_field):
-                pokemons.append(Pokemon.objects.get(pk=getattr(instance, poke_field).id))
-        
         for prev_pokemon in prev_pokemons:
             if prev_pokemon not in pokemons:
                 prev_pokemon.team = None
                 prev_pokemon.save()
 
-        for pokemon in pokemons:
-            pokemon.team = instance
-            pokemon.save()
+    for pokemon in pokemons:
+        pokemon.team = instance
+        pokemon.save()
 
 
 @receiver(post_delete, sender=Team)
@@ -103,5 +54,3 @@ def remove_from_team(sender, instance, **kwargs):
     for pokemon in pokemons:
         pokemon.team = None
         pokemon.save()
-
-
