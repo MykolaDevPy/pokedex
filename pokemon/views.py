@@ -37,7 +37,8 @@ class PokemonViewSet(ModelViewSet):
     filterset_class = PokemonFilter
 
     def get_queryset(self):
-        """Return the queryset of Pokemon instances based on their trainer"""
+        """Return the queryset of Pokemon instances based on user permissions."""
+
         if self.request.user.is_superuser:
             return Pokemon.objects.all().order_by("pokedex_creature__ref_number")
         elif self.request.user.is_anonymous:
