@@ -19,8 +19,6 @@ class PokemonSerializer(serializers.ModelSerializer):
             "nickname",
             "level",
             "experience",
-            "favorite_object",
-            "team",
         )
         read_only_fields = (
             "id",
@@ -61,8 +59,6 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "level",
-            "favorite_object",
-            "team",
         )
 
 
