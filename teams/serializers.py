@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
+from drf_spectacular.utils import extend_schema_field
+
 
 import pokemon
 from .models import Team
