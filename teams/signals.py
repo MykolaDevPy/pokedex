@@ -32,8 +32,6 @@ def sort_pokemon(sender, instance, **kwargs):
 def assign_to_team(sender, instance, created, **kwargs):
     """Updating the information about team in Pokemon instance."""
     pokemons = []
-    pokemons = []
-
 
     # Getting all pokemons assigned to this team
     for i in range(1, 6):
