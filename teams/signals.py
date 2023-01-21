@@ -1,11 +1,13 @@
 from django.db.models import Q
 from django.db.models.signals import post_delete
+
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from .models import Team
 from pokemon.models import Pokemon
+
 
 
 @receiver(pre_save, sender=Team)
@@ -25,14 +27,17 @@ def sort_pokemon(sender, instance, **kwargs):
         setattr(instance, f"pokemon_{i+1}", pokemon)
 
 
+
 @receiver(post_save, sender=Team)
 def assign_to_team(sender, instance, created, **kwargs):
     """Updating the information about team in Pokemon instance."""
     pokemons = []
     pokemons = []
 
-    for i in range(1,6):
-        poke_field = 'pokemon_' + str(i)
+
+    # Getting all pokemons assigned to this team
+    for i in range(1, 6):
+        poke_field = "pokemon_" + str(i)
         if getattr(instance, poke_field):
             pokemons.append(Pokemon.objects.get(pk=getattr(instance, poke_field).id))
 
@@ -44,7 +49,7 @@ def assign_to_team(sender, instance, created, **kwargs):
             if prev_pokemon not in pokemons:
                 prev_pokemon.team = None
                 prev_pokemon.save()
-    
+
     # Put the name of current Team in the Pokemon instance
     for pokemon in pokemons:
         # Getting previous Teams where could be the same Pokemon
