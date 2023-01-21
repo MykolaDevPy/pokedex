@@ -6,6 +6,7 @@ from .models import Team
 from .filters import TeamsFilterSet
 from .permissions import IsOwner
 from .serializers import TeamSerializer
+from .serializers import TeamDetailsSerializer
 
 
 @extend_schema_view(
@@ -31,3 +32,8 @@ class TeamViewSet(ModelViewSet):
         if self.request.user.is_superuser:
             return Team.objects.all().order_by("name")
         return Team.objects.filter(trainer=self.request.user.pk).order_by("name")
+
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return TeamDetailsSerializer
