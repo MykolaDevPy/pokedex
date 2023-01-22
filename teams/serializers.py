@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
-from drf_spectacular.utils import extend_schema_field
 
 
 import pokemon
@@ -22,7 +21,7 @@ class TeamSerializer(ModelSerializer):
             "pokemon_4",
             "pokemon_5",
         )
-        read_only_fields = ("id")
+        read_only_fields = ("id",)
         extra_kwargs = {
             "pokemon_1": {"allow_null": True, "required": False,},
             "pokemon_2": {"allow_null": True, "required": False,},
@@ -30,6 +29,17 @@ class TeamSerializer(ModelSerializer):
             "pokemon_4": {"allow_null": True, "required": False,},
             "pokemon_5": {"allow_null": True, "required": False,},
         }
+
+    
+    def validate(self, obj):
+            """Validation of Pokemon's owner."""
+            for i in range(1, 6):
+                poke_field = f"pokemon_{i}"
+                if obj[poke_field]:
+                    if obj[poke_field].trainer != self.context["request"].user:
+                        obj[poke_field] = None
+            
+            return super().validate(obj)
     
 
 class TeamDetailsSerializer(ModelSerializer):
