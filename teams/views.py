@@ -37,3 +37,5 @@ class TeamViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == "retrieve":
             return TeamDetailsSerializer
+        
+        return TeamSerializer
