@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.db.models.signals import post_delete
-
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -53,17 +52,17 @@ def assign_to_team(sender, instance, created, **kwargs):
     for pokemon in pokemons:
         # Getting previous Teams where could be the same Pokemon
         another_team = Team.objects.filter(
-            Q(pokemon_1=pokemon) | 
-            Q(pokemon_2=pokemon) | 
-            Q(pokemon_3=pokemon) | 
-            Q(pokemon_4=pokemon) | 
-            Q(pokemon_5=pokemon)
+            Q(pokemon_1=pokemon)
+            | Q(pokemon_2=pokemon)
+            | Q(pokemon_3=pokemon)
+            | Q(pokemon_4=pokemon)
+            | Q(pokemon_5=pokemon)
         ).first()
         if another_team:
             for i in range(1, 6):
                 poke_field = "pokemon_%d" % i
                 # Delete current pokemon from previous team
-                if getattr(another_team, poke_field ) == pokemon:
+                if getattr(another_team, poke_field) == pokemon:
                     setattr(another_team, poke_field, None)
                     another_team.save()
         pokemon.team = instance

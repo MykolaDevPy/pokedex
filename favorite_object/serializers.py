@@ -9,15 +9,11 @@ class FavoriteObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = FavoriteObject
         fields = (
-            "id",
             "name",
             "img_url",
-            "description",
         )
         read_only_fields = (
             "id",
-            "name",
-            "img_url",
             "description",
         )
 
@@ -27,10 +23,9 @@ class FavoriteObjectDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FavoriteObject
-        fields = "__all__"
-        read_only_fields = (
-            "id",
+        fields = (
             "name",
             "img_url",
             "description",
         )
+        read_only_fields = ("id",)
