@@ -7,7 +7,7 @@ class FavoriteObjectFilter(django_filters.FilterSet):
     """Filter for favorite objects listing."""
 
     id = django_filters.NumberFilter()
-    name = django_filters.CharFilter(lookup_exp="icontains")
+    name = django_filters.CharFilter(lookup_expr="icontains")
 
     class Meta:
         model = FavoriteObject
