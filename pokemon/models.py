@@ -1,14 +1,10 @@
 from django.conf import settings
 from django.db import models
 
+from .utils import get_random_object
 from favorite_object.models import FavoriteObject
 from pokedex.models import PokedexCreature
 from teams.models import Team
-
-
-def get_random_object():
-    """Get a random object from the database"""
-    return FavoriteObject.objects.all().order_by("?").first()
 
 
 class Pokemon(models.Model):
@@ -45,7 +41,7 @@ class Pokemon(models.Model):
         blank=True,
         null=True,
         default=None,
-        related_name='pokemon_team',
+        related_name="pokemon_team",
     )
 
     def clean(self):
