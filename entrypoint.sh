@@ -11,13 +11,13 @@ fi
 gosu simadm ./manage.py makemigrations
 gosu simadm ./manage.py migrate
 
-if [ $(gosu simadm psql -U postgres -h $PGHOST -p $PGPORT -d $PGDATABASE -tAc "SELECT count(*) FROM pokedex_creature") -eq 0 ]; then
+if [ $(gosu simadm psql -U postgres -h $PGHOST -p $PGPORT -d $PGDATABASE -tAc "SELECT count(*) FROM pokedex_pokedexcreature") -eq 0 ]; then
     gosu simadm ./manage.py import_csv
 else
     echo "Table is not empty"
 fi
 
-if [ $(gosu simadm psql -U postgres -h $PGHOST -p $PGPORT -d $PGDATABASE -tAc "SELECT count(*) FROM favorite_object") -eq 0 ]; then
+if [ $(gosu simadm psql -U postgres -h $PGHOST -p $PGPORT -d $PGDATABASE -tAc "SELECT count(*) FROM favorite_object_favoriteobject") -eq 0 ]; then
     gosu simadm ./manage.py import_objects_csv
 else
     echo "Table is not empty"
