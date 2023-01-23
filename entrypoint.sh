@@ -13,5 +13,5 @@ gosu simadm ./manage.py collectstatic --noinput
 gosu simadm ./manage.py makemigrations
 gosu simadm ./manage.py migrate
 gosu simadm ./manage.py import_csv
-gosu simadm ./manage.py import_object_csv
+gosu simadm ./manage.py import_objects_csv
 exec gosu simadm uwsgi --http-socket :8030 --uid simadm --ini config_files/basic-docker.ini --processes 4 --threads 2 --wsgi-file pokedex-back/wsgi.py
