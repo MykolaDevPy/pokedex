@@ -11,6 +11,7 @@ from .permissions import IsOwner
 from .serializers import PokemonDetailsSerializer
 from .serializers import PokemonGiveXPSerializer
 from .serializers import PokemonSerializer
+from .serializers import PokemonWildSerializer
 
 
 @extend_schema_view(
@@ -54,10 +55,24 @@ class PokemonViewSet(ModelViewSet):
 
         return PokemonSerializer
 
+    @action(methods=["GET"], detail=False, url_path="wild")
+    @extend_schema(responses=PokemonWildSerializer)
+    def wild_pokemon(self, request):
+        """Action to get the wild pokemons"""
+
+        pokemon = Pokemon.objects.filter(trainer=None)
+
+        if pokemon:
+            response_serializer = PokemonWildSerializer(instance=pokemon, many=True)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
     @action(methods=["POST"], detail=True, url_path="give_xp")
     @extend_schema(responses=PokemonSerializer)
     def give_xp(self, request, pk=None):
         """Action to give extra experience points to a pokemon"""
+
         pokemon: Pokemon = self.get_object()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

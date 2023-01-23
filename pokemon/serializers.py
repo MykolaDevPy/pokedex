@@ -38,6 +38,8 @@ class PokemonSerializer(serializers.ModelSerializer):
 
 
 class PokemonDetailsSerializer(serializers.ModelSerializer):
+    """Serializer of Pokemon details object"""
+
     pokedex_creature = PokedexCreatureDetailSerializer()
     trainer = UserSerializer()
     favorite_object = FavoriteObjectDetailSerializer()
@@ -59,6 +61,29 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "level",
+        )
+
+
+class PokemonWildSerializer(serializers.Serializer):
+    """Serializer of wild pokemon endpoint"""
+
+    pokedex_creature = PokedexCreatureDetailSerializer()
+    favorite_object = FavoriteObjectDetailSerializer()
+
+    class Meta:
+        model = Pokemon
+        fields = (
+            "experience",
+            "pokedex_creature",
+            "favorite_object",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
+            "trainer",
+            "nickname",
+            "team",
         )
 
 
