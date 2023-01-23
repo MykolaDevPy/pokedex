@@ -4,7 +4,10 @@ while !</dev/tcp/$PGHOST/$PGPORT; do echo "En attente du demarrage de postgresql
 if ! PGPASSWORD=$PGPASSWORD psql -U postgres -h $PGHOST -p $PGPORT -lqt | cut -d \| -f 1 | cut -d ' ' -f 2 | grep -q "^railway$"; then
     PGPASSWORD=$PGPASSWORD createdb -U postgres -h $PGHOST -p $PGPORT $PGDATABASE
 else
-    echo "La database existe deja"
+    dropdb -U postgres -h $PGHOST -p $PGPORT -W $PGDATABASE
+    PGPASSWORD=$PGPASSWORD createdb -U postgres -h $PGHOST -p $PGPORT $PGDATABASE
+    echo $PGDATABASE + " created"
+
 fi
 
 mkdir -p /var/www/static && chown simadm:www-data /var/www/static
