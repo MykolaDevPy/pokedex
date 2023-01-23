@@ -2,6 +2,7 @@
 # PARTIE SYSADMIN overriding
 ##############################
 import django_env_overrides
+import os
 
 DEBUG = False
 
@@ -13,10 +14,10 @@ django_env_overrides.apply_to(globals())
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": PGHOST,
-        "NAME": PGDATABASE,
-        "USER": PGUSER,
-        "PASSWORD": PGPASSWORD,
-        "PORT": PGPORT,
+        "HOST": os.getenv("PGHOST"),
+        "NAME": os.getenv("PGDATABASE"),
+        "USER": os.getenv("PGUSER"),
+        "PASSWORD": os.getenv("PGPASSWORD"),
+        "PORT": os.getenv("PGPORT"),
     }
 }
