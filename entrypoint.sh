@@ -1,8 +1,8 @@
 #!/bin/bash
 
-while !</dev/tcp/$POSTGRES_HOST/$POSTGRES_PORT; do echo "En attente du demarrage de postgresql" && sleep 1; done
-if ! PGPASSWORD=8Fny?aXEFkh9ePA3 psql -U postgres -h $POSTGRES_HOST -p $POSTGRES_PORT -lqt | cut -d \| -f 1 | cut -d ' ' -f 2 | grep -q "^pokedex$"; then
-    PGPASSWORD=8Fny?aXEFkh9ePA3 createdb -U postgres -h $POSTGRES_HOST -p $POSTGRES_PORT pokedex
+while !</dev/tcp/$PGHOST/$PGPORT; do echo "En attente du demarrage de postgresql" && sleep 1; done
+if ! PGPASSWORD=$PGPASSWORD psql -U postgres -h $PGHOST -p $PGPORT -lqt | cut -d \| -f 1 | cut -d ' ' -f 2 | grep -q "^railway$"; then
+    PGPASSWORD=$PGPASSWORD createdb -U postgres -h $PGHOST -p $PGPORT $PGDATABASE
 else
     echo "La database existe deja"
 fi
