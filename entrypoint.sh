@@ -13,7 +13,6 @@ gosu simadm ./manage.py migrate
 
 if [ $(gosu simadm psql -U postgres -h $PGHOST -p $PGPORT -d $PGDATABASE -tAc "SELECT count(*) FROM pokedex_creature") -eq 0 ]; then
     gosu simadm ./manage.py import_csv
-    gosu simadm ./manage.py import_objects_csv
 else
     echo "Table is not empty"
 fi
