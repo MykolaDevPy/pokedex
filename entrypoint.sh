@@ -8,7 +8,7 @@ if ! PGPASSWORD=$PGPASSWORD psql -U postgres -h $PGHOST -p $PGPORT -lqt | cut -d
     gosu simadm ./manage.py import_csv
     gosu simadm ./manage.py import_objects_csv
 else
-    echo $PGDATABASE + " already exists"
+    echo $PGDATABASE" already exists"
 
 fi
 
