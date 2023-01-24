@@ -4,10 +4,13 @@
 import django_env_overrides
 import os
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 DEBUG = False
 
 STATIC_ROOT = "/var/www/static"
 STATIC_URL = "/static/"
+
 
 django_env_overrides.apply_to(globals())
 

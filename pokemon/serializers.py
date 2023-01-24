@@ -64,7 +64,7 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         )
 
 
-class PokemonWildSerializer(serializers.Serializer):
+class PokemonWildSerializer(serializers.ModelSerializer):
     """Serializer of wild pokemon endpoint"""
 
     pokedex_creature = PokedexCreatureDetailSerializer()
