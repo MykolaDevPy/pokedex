@@ -23,8 +23,6 @@ class PokemonSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "level",
-            "favorite_object",
-            "team",
         )
 
     def validate(self, attrs):
