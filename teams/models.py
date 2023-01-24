@@ -55,15 +55,8 @@ class Team(models.Model):
 
     def __str__(self):
         pokemons = [self.pokemon_1, self.pokemon_2, self.pokemon_3, self.pokemon_4, self.pokemon_5]
-        output_str = ""
-        
-        for i, pokemon in enumerate(pokemons):
-            if pokemon:
-                output_str += pokemon.name
-            if pokemon[i+1]:
-                output_str += ", "
-            else:
-                output_str += "."
+
+        output_str = ", ".join([str(pokemon.nickname) for pokemon in pokemons if pokemon]) + "."
 
         return "Team '{}' (by {}): {}".format(
             self.name,
