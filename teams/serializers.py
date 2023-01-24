@@ -5,6 +5,7 @@ from rest_framework.serializers import SerializerMethodField
 import pokemon
 from .models import Team
 from authentication.serializers import UserSerializer
+from pokemon.serializers import PokemonTeamDetailsSerializer
 
 
 class TeamSerializer(ModelSerializer):
@@ -42,15 +43,19 @@ class TeamSerializer(ModelSerializer):
             
             return super().validate(obj)
     
+    def create(self, validated_data):
+        """Create a new Team instance"""
+        return Team.objects.create(**validated_data)
+    
 
 class TeamDetailsSerializer(ModelSerializer):
     """Serializer for details of Team instances"""
 
-    pokemon_1 = SerializerMethodField()
-    pokemon_2 = SerializerMethodField()
-    pokemon_3 = SerializerMethodField()
-    pokemon_4 = SerializerMethodField()
-    pokemon_5 = SerializerMethodField()
+    pokemon_1 = PokemonTeamDetailsSerializer()
+    pokemon_2 = PokemonTeamDetailsSerializer()
+    pokemon_3 = PokemonTeamDetailsSerializer()
+    pokemon_4 = PokemonTeamDetailsSerializer()
+    pokemon_5 = PokemonTeamDetailsSerializer()
     trainer = UserSerializer()
 
     class Meta:
@@ -66,39 +71,3 @@ class TeamDetailsSerializer(ModelSerializer):
             "pokemon_5",
         )
         read_only_fields = ("id", "trainer",)
-
-    # Methods to relate each Pokemon object
-    def get_pokemon_1(self, obj):
-        pokemon_1 = obj.pokemon_1
-        if not pokemon_1:
-            return None
-        serializer = pokemon.serializers.PokemonDetailsSerializer(pokemon_1)
-        return serializer.data
-    
-    def get_pokemon_2(self, obj):
-        pokemon_2 = obj.pokemon_2
-        if not pokemon_2:
-            return None
-        serializer = pokemon.serializers.PokemonDetailsSerializer(pokemon_2)
-        return serializer.data
-    
-    def get_pokemon_3(self, obj):
-        pokemon_3 = obj.pokemon_3
-        if not pokemon_3:
-            return None
-        serializer = pokemon.serializers.PokemonDetailsSerializer(pokemon_3)
-        return serializer.data
-    
-    def get_pokemon_4(self, obj):
-        pokemon_4 = obj.pokemon_4
-        if not pokemon_4:
-            return None
-        serializer = pokemon.serializers.PokemonDetailsSerializer(pokemon_4)
-        return serializer.data
-    
-    def get_pokemon_5(self, obj):
-        pokemon_5 = obj.pokemon_5
-        if not pokemon_5:
-            return None
-        serializer = pokemon.serializers.PokemonDetailsSerializer(pokemon_5)
-        return serializer.data

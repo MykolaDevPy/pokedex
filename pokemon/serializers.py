@@ -4,7 +4,6 @@ from .models import Pokemon
 from authentication.serializers import UserSerializer
 from favorite_object.serializers import FavoriteObjectDetailSerializer
 from pokedex.serializers import PokedexCreatureDetailSerializer
-from teams.serializers import TeamDetailsSerializer
 
 
 class PokemonSerializer(serializers.ModelSerializer):
@@ -41,7 +40,6 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
     pokedex_creature = PokedexCreatureDetailSerializer()
     trainer = UserSerializer()
     favorite_object = FavoriteObjectDetailSerializer()
-    team = TeamDetailsSerializer()
 
     class Meta:
         model = Pokemon
@@ -62,6 +60,30 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         )
 
 
+class PokemonTeamDetailsSerializer(serializers.ModelSerializer):
+    """Serializer of Pokemon details object"""
+
+    pokedex_creature = PokedexCreatureDetailSerializer()
+    favorite_object = FavoriteObjectDetailSerializer()
+
+    class Meta:
+        model = Pokemon
+        fields = (
+            "id",
+            "nickname",
+            "level",
+            "experience",
+            "pokedex_creature",
+            "favorite_object",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
+        )
+
+
+
 class PokemonWildSerializer(serializers.ModelSerializer):
     """Serializer of wild pokemon endpoint"""
 
@@ -71,6 +93,7 @@ class PokemonWildSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pokemon
         fields = (
+            "id",
             "trainer",
             "experience",
             "pokedex_creature",

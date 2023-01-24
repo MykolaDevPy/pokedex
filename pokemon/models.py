@@ -35,13 +35,11 @@ class Pokemon(models.Model):
         FavoriteObject, on_delete=models.SET_NULL, null=True, default=get_random_object
     )
 
-    team = models.ForeignKey(
-        Team,
-        on_delete=models.SET_NULL,
+    team = models.CharField(
+        max_length=100,
         blank=True,
         null=True,
         default=None,
-        related_name="pokemon_team",
     )
 
     def clean(self):
