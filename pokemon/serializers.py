@@ -23,8 +23,6 @@ class PokemonSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "level",
-            "favorite_object",
-            "team",
         )
 
     def validate(self, attrs):
@@ -64,7 +62,7 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
         )
 
 
-class PokemonWildSerializer(serializers.Serializer):
+class PokemonWildSerializer(serializers.ModelSerializer):
     """Serializer of wild pokemon endpoint"""
 
     pokedex_creature = PokedexCreatureDetailSerializer()
@@ -73,6 +71,7 @@ class PokemonWildSerializer(serializers.Serializer):
     class Meta:
         model = Pokemon
         fields = (
+            "trainer",
             "experience",
             "pokedex_creature",
             "favorite_object",
@@ -81,7 +80,6 @@ class PokemonWildSerializer(serializers.Serializer):
         read_only_fields = (
             "id",
             "level",
-            "trainer",
             "nickname",
             "team",
         )

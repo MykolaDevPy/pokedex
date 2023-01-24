@@ -54,14 +54,21 @@ class Team(models.Model):
     
 
     def __str__(self):
-        return "Team '{}' (by {}): {}, {}, {}, {}, {},".format(
+        pokemons = [self.pokemon_1, self.pokemon_2, self.pokemon_3, self.pokemon_4, self.pokemon_5]
+        output_str = ""
+        
+        for i, pokemon in enumerate(pokemons):
+            if pokemon:
+                output_str += pokemon.name
+            if pokemon[i+1]:
+                output_str += ", "
+            else:
+                output_str += "."
+
+        return "Team '{}' (by {}): {}".format(
             self.name,
             self.trainer,
-            self.pokemon_1 if self.pokemon_1 else "",
-            self.pokemon_2 if self.pokemon_2 else "",
-            self.pokemon_3 if self.pokemon_3 else "",
-            self.pokemon_4 if self.pokemon_4 else "",
-            self.pokemon_5 if self.pokemon_5 else "",
+            output_str,
         )
 
     

@@ -13,6 +13,7 @@ class TeamSerializer(ModelSerializer):
     class Meta:
         model = Team
         fields = (
+            "id",
             "trainer",
             "name",
             "pokemon_1",
@@ -55,6 +56,7 @@ class TeamDetailsSerializer(ModelSerializer):
     class Meta:
         model = Team
         fields = (
+            "id",
             "trainer",
             "name",
             "pokemon_1",
@@ -63,7 +65,7 @@ class TeamDetailsSerializer(ModelSerializer):
             "pokemon_4",
             "pokemon_5",
         )
-        read_only_fields = ("id",)
+        read_only_fields = ("id", "trainer",)
 
     # Methods to relate each Pokemon object
     def get_pokemon_1(self, obj):
