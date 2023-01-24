@@ -58,7 +58,7 @@ def assign_to_team(sender, instance, created, **kwargs):
             | Q(pokemon_4=pokemon)
             | Q(pokemon_5=pokemon)
         ).first()
-        if another_team:
+        if another_team and another_team!= instance:
             for i in range(1, 6):
                 poke_field = "pokemon_%d" % i
                 # Delete current pokemon from previous team
