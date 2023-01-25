@@ -33,16 +33,20 @@ class TeamSerializer(ModelSerializer):
 
     
     def validate(self, obj):
-            """Validation of Pokemon's owner."""
-            for i in range(1, 6):
-                poke_field = f"pokemon_{i}"
-                if obj[poke_field]:
+        """Validation of Pokemon's owner."""
+        for i in range(1, 6):
+            poke_field = f"pokemon_{i}"
+            if obj[poke_field]:
+                if self.context["request"].user.is_superuser:
                     pokemon = Pokemon.objects.get(pk=obj[poke_field].id)
                     if obj[poke_field].trainer != pokemon.trainer:
                         obj[poke_field] = None
-            
-            return super().validate(obj)
+                elif obj[poke_field].trainer != self.context["request"].user:
+                    obj[poke_field] = None
+        
+        return super().validate(obj)
     
+
     def create(self, validated_data):
         """Create a new Team instance"""
         return Team.objects.create(**validated_data)
