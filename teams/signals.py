@@ -9,7 +9,7 @@ from pokemon.models import Pokemon
 
 
 @receiver(pre_save, sender=Team)
-def sort_pokemon(sender, instance, **kwargs):
+def sort_pokemon(sender, instance, **kwargs) -> None:
     """Sort pokemons by None value and reassign the sorted pokemons to the corresponding fields"""
     pokemons = [
         instance.pokemon_1_id,
@@ -29,7 +29,7 @@ def sort_pokemon(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Team)
-def assign_to_team(sender, instance, created, **kwargs):
+def assign_to_team(sender, instance, created, **kwargs) -> None:
     """Updating the information about team in Pokemon instance."""
     pokemons = [
         instance.pokemon_1_id,
@@ -39,6 +39,7 @@ def assign_to_team(sender, instance, created, **kwargs):
         instance.pokemon_5_id,
     ]
 
+    # Remove the same pokemon from the  previous team
     set_changed_team(pokemons, instance)
 
     # Put the name of current Team in the Pokemon instance
@@ -52,7 +53,7 @@ def assign_to_team(sender, instance, created, **kwargs):
 
 
 @receiver(post_delete, sender=Team)
-def remove_from_team(sender, instance, **kwargs):
+def remove_from_team(sender, instance, **kwargs) -> None:
     """Removing a team from Pokemon instance if Team instance is deleted."""
     pokemons = Pokemon.objects.filter(team=instance)
     for pokemon in pokemons:
