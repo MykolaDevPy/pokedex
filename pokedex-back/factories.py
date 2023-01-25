@@ -9,6 +9,7 @@ from pytest_factoryboy import register
 from favorite_object.models import FavoriteObject
 from pokedex.models import PokedexCreature
 from pokemon.models import Pokemon
+from teams.models import Team
 
 User = get_user_model()
 DEFAULT_PASSWORD = "secretpassword"
@@ -54,6 +55,7 @@ class FavoriteObjectFactory(DjangoModelFactory):
         [
             "Objet à tenir augmentant la puissance des attaques immobilisantes telles que Ligotage ou Étreinte.",
             "Objet à tenir qui annule l’attirance d’un Pokémon. Ne peut être utilisé qu’une fois.",
+            "Objet à utiliser sur un Pokémon. Il augmente un peu son Attaque lors d’une montée de niveau.",
         ],
         1,
     )
@@ -89,7 +91,28 @@ class UserFactory(DjangoModelFactory):
         obj.save()
 
 
+class TeamFactory(DjangoModelFactory):
+    """Generator of Team objects"""
+
+    class Meta:
+        model = Team
+
+    name = factory.Sequence(lambda n: f"Team {n + 1}")
+    trainer = factory.SubFactory(UserFactory)
+    pokemon_1 = factory.SubFactory(PokemonFactory)
+    pokemon_2 = factory.SubFactory(PokemonFactory)
+    pokemon_3 = factory.SubFactory(PokemonFactory)
+    pokemon_4 = factory.SubFactory(PokemonFactory)
+    pokemon_5 = factory.SubFactory(PokemonFactory)
+
+    @factory.post_generation
+    def clean(obj, create, extracted, **kwargs):
+        """Call team model clean method"""
+        obj.clean()
+
+
 register(PokedexCreatureFactory)
 register(FavoriteObjectFactory)
 register(PokemonFactory)
 register(UserFactory)
+register(TeamFactory)
