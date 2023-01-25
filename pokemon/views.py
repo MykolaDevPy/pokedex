@@ -60,10 +60,10 @@ class PokemonViewSet(ModelViewSet):
     def wild_pokemon(self, request):
         """Action to get the wild pokemons"""
 
-        pokemon = Pokemon.objects.filter(trainer=None)
+        pokemons = Pokemon.objects.filter(trainer=None)
 
-        if pokemon:
-            response_serializer = PokemonWildSerializer(instance=pokemon, many=True)
+        if pokemons:
+            response_serializer = PokemonWildSerializer(instance=pokemons, many=True)
             return Response(response_serializer.data, status=status.HTTP_200_OK)
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)

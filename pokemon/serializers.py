@@ -94,7 +94,7 @@ class PokemonWildSerializer(serializers.ModelSerializer):
         model = Pokemon
         fields = (
             "id",
-            "trainer",
+            "level",
             "experience",
             "pokedex_creature",
             "favorite_object",
@@ -103,8 +103,6 @@ class PokemonWildSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "level",
-            "nickname",
-            "team",
         )
 
 
