@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
 
 
-import pokemon
+from pokemon.models import Pokemon
 from .models import Team
 from authentication.serializers import UserSerializer
 from pokemon.serializers import PokemonTeamDetailsSerializer
@@ -38,7 +38,8 @@ class TeamSerializer(ModelSerializer):
             for i in range(1, 6):
                 poke_field = f"pokemon_{i}"
                 if obj[poke_field]:
-                    if obj[poke_field].trainer != self.context["request"].user:
+                    pokemon = Pokemon.objects.get(pk=obj[poke_field].id)
+                    if obj[poke_field].trainer != pokemon.trainer:
                         obj[poke_field] = None
             
             return super().validate(obj)
