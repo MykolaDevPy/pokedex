@@ -1,4 +1,8 @@
+# Hosting 
+https://pokedex-simco.up.railway.app/api/swagger/
+
 # Pokedex-back
+
 
 API de pokedex et d'instanciation de pokemon !
 

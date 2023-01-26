@@ -11,11 +11,12 @@ def set_changed_team(pokemons, instance) -> None:
     set None as value for pokemon if he is not more in this team.
     """
     
-    prev_pokemons = Pokemon.objects.filter(team=instance)
+    prev_pokemons = Pokemon.objects.filter(team_id=instance.id)
     if prev_pokemons:
         for prev_pokemon in prev_pokemons:
             if prev_pokemon not in pokemons:
                 prev_pokemon.team = None
+                prev_pokemon.team_id = None
                 prev_pokemon.save()
 
 def check_another_teams(pokemon, instance) -> None:

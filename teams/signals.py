@@ -38,9 +38,11 @@ def assign_to_team(sender, instance, created, **kwargs) -> None:
         instance.pokemon_4_id,
         instance.pokemon_5_id,
     ]
-
+    
     # Remove the same pokemon from the  previous team
-    set_changed_team(pokemons, instance)
+    if not created:
+        set_changed_team(pokemons, instance)
+
 
     # Put the name of current Team in the Pokemon instance
     for pokemon_id in pokemons:

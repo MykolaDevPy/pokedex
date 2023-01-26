@@ -9,7 +9,6 @@ from django.db.utils import OperationalError
 
 from pokemon.models import PokedexCreature
 
-
 def test_wait_for_db_ready() -> None:
     """Test waiting for db when db is available"""
 
