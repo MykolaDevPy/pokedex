@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema_view
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Team
 from .filters import TeamsFilterSet
@@ -22,7 +23,7 @@ from .serializers import TeamDetailsSerializer
     destroy=extend_schema(description="API endpoint to delete a specific team"),
 )
 class TeamViewSet(ModelViewSet):
-    permission_classes = (IsOwner,)
+    permission_classes = (IsOwner, IsAuthenticated,)
     serializer_class = TeamSerializer
     filterset_class = TeamsFilterSet
 
@@ -31,6 +32,7 @@ class TeamViewSet(ModelViewSet):
 
         if self.request.user.is_superuser:
             return Team.objects.all().order_by("name")
+        
         return Team.objects.filter(trainer=self.request.user.pk).order_by("name")
 
 

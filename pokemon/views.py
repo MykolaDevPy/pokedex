@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from .filters import PokemonFilter
 from .models import Pokemon
@@ -33,7 +34,7 @@ from .serializers import PokemonWildSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsOwner,)
+    permission_classes = (IsOwner, IsAuthenticated)
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
 
@@ -42,8 +43,6 @@ class PokemonViewSet(ModelViewSet):
 
         if self.request.user.is_superuser:
             return Pokemon.objects.all().order_by("pokedex_creature__ref_number")
-        elif self.request.user.is_anonymous:
-            return Pokemon.objects.none()
 
         return Pokemon.objects.filter(trainer=self.request.user.pk)
 
