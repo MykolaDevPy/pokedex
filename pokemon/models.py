@@ -42,6 +42,12 @@ class Pokemon(models.Model):
         default=None,
     )
 
+    team_id = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=None,
+    )
+
     def clean(self):
         """
         Set default nickname to related pokedex creature name
