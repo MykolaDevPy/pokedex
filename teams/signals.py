@@ -47,15 +47,18 @@ def assign_to_team(sender, instance, created, **kwargs):
         if pokemon_id:
             pokemon = Pokemon.objects.get(pk=pokemon_id)
             pokemon.team = instance.name
-            pokemon.save(update_fields=["team"])
+            pokemon.team_pk = instance.id
+            pokemon.save()
             # Getting previous Teams where could be the same Pokemon
-            check_another_teams(pokemon, instance)
+    
+    check_another_teams(pokemons, instance)
 
 
 @receiver(post_delete, sender=Team)
 def remove_from_team(sender, instance, **kwargs):
     """Removing a team from Pokemon instance if Team instance is deleted."""
-    pokemons = Pokemon.objects.filter(team=instance)
+    pokemons = Pokemon.objects.filter(team_pk=instance.id)
     for pokemon in pokemons:
         pokemon.team = None
+        pokemon.team_pk = None
         pokemon.save()

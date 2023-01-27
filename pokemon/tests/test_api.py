@@ -74,6 +74,7 @@ def test_create_pokemon(
     res = client_log.post(
         reverse("pokemon:pokemon-list"),
         payload,
+        format="json",
     )
     assert res.status_code == status.HTTP_201_CREATED
 
@@ -88,6 +89,7 @@ def test_create_pokemon(
     res = client_log.post(
         reverse("pokemon:pokemon-list"),
         payload,
+        format="json",
     )
     assert res.status_code == status.HTTP_201_CREATED
 
@@ -102,6 +104,7 @@ def test_partial_update_pokemon(client_log, pokemon_factory):
     res = client_log.patch(
         reverse("pokemon:pokemon-detail", args=[pokemon.id]),
         payload,
+        format="json",
     )
     assert res.status_code == status.HTTP_200_OK
     pokemon.refresh_from_db()
@@ -122,6 +125,7 @@ def test_full_update_pokemon(
     res = client_log.put(
         reverse("pokemon:pokemon-detail", args=[pokemon.id]),
         payload,
+        format="json",
     )
     assert res.status_code == status.HTTP_200_OK
     pokemon.refresh_from_db()
@@ -150,6 +154,7 @@ def test_give_xp_to_pokemon(client_log, pokemon_factory):
     res = client_log.post(
         reverse("pokemon:pokemon-give-xp", args=[pokemon.id]),
         payload,
+        format="json",
     )
     assert res.status_code == status.HTTP_200_OK
 

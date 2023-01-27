@@ -1,14 +1,13 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 
-class IsOwner(BasePermission):
+class IsOwner(IsAuthenticated):
     """Check if a user has the given permission"""
 
     def has_object_permission(self, request, view, obj):
-        permission_access = False
-        if request.user.is_superuser:
-            permission_access = True
+        if obj.trainer == request.user or request.user.is_superuser:
+            return True
         else:
-            permission_access = obj.trainer == request.user
+            raise PermissionDenied
 
-        return permission_access

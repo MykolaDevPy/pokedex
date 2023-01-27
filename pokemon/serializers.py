@@ -52,14 +52,14 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
             "trainer",
             "favorite_object",
             "team",
-            "team_id",
+            "team_pk",
         )
 
         read_only_fields = (
             "id",
             "level",
             "team",
-            "team_id",
+            "team_pk",
         )
 
 
