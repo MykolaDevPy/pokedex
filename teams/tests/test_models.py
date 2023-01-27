@@ -28,8 +28,8 @@ def test_teams_str(
         pokemon_5=None,
     )
 
-    assert str(team_1) == "Team 'Test Team' (by tai): Pokemon 1, Pokemon 2."
-    
+    assert str(team_1) == "Team 'Test Team' (by tai): Paras, Ponyta."
+
 
 
 

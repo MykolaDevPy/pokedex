@@ -42,7 +42,7 @@ class Pokemon(models.Model):
         default=None,
     )
 
-    team_id = models.PositiveSmallIntegerField(
+    team_pk = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
         default=None,

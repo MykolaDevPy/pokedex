@@ -38,3 +38,5 @@ def client_admin(user_admin):
     client_log = APIClient()
     client_log.force_authenticate(user_admin)
 
+    return client_log
+

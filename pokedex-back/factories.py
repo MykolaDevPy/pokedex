@@ -43,7 +43,7 @@ class FavoriteObjectFactory(DjangoModelFactory):
         model = FavoriteObject
 
     name = sample(["Attaque +", "Baie Fraive", "Veste de Combat"], 1)
-    imd_url = sample(
+    img_url = sample(
         [
             "https://www.pokemontrash.com/pokedex/images/items/safety-goggles.png",
             "https://www.pokemontrash.com/pokedex/images/items/assault-vest.png",

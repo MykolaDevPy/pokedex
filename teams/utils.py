@@ -11,26 +11,27 @@ def set_changed_team(pokemons, instance) -> None:
     set None as value for pokemon if he is not more in this team.
     """
     
-    prev_pokemons = Pokemon.objects.filter(team_id=instance.id)
+    prev_pokemons = Pokemon.objects.filter(team_pk=instance.id)
     if prev_pokemons:
         for prev_pokemon in prev_pokemons:
             if prev_pokemon not in pokemons:
                 prev_pokemon.team = None
-                prev_pokemon.team_id = None
+                prev_pokemon.team_pk = None
                 prev_pokemon.save()
 
-def check_another_teams(pokemon, instance) -> None:
+def check_another_teams(pokemons, instance) -> None:
     """
     Check if the given pokemon is already in another team and 
     remove it from previous team if it is.
     """
-    another_team = Team.objects.filter(
-                Q(pokemon_1=pokemon)
-                | Q(pokemon_2=pokemon)
-                | Q(pokemon_3=pokemon)
-                | Q(pokemon_4=pokemon)
-                | Q(pokemon_5=pokemon)
-            ).exclude(pk=instance.id).first()
+    for pokemon in pokemons:
+        another_team = Team.objects.filter(
+                    Q(pokemon_1=pokemon)
+                    | Q(pokemon_2=pokemon)
+                    | Q(pokemon_3=pokemon)
+                    | Q(pokemon_4=pokemon)
+                    | Q(pokemon_5=pokemon)
+                ).exclude(pk=instance.id).first()
     if another_team:
         for i in range(1, 6):
             poke_field = "pokemon_%d" % i
