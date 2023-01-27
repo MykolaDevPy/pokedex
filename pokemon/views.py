@@ -34,7 +34,7 @@ from .serializers import PokemonWildSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsOwner,)
+    permission_classes = (IsOwner, IsAuthenticated)
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
 
