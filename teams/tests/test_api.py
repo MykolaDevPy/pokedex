@@ -2,13 +2,10 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from time import sleep
 
 from pokemon.models import Pokemon
 from teams.models import Team
 from teams.serializers import TeamSerializer
-from teams.serializers import TeamDetailsSerializer
-
 
 pytestmark = pytest.mark.django_db
 
@@ -52,7 +49,7 @@ def test_listing_teams(
     assert serializer.data == res.data["results"]
 
 
-def test_create_team(user_factory, team_factory, pokemon_factory, user_log, client_log):
+def test_create_team(team_factory, pokemon_factory, user_log, client_log):
     """Test creating a team by authenticated user"""
     team_factory()
     user = user_log
