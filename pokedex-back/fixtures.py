@@ -23,7 +23,7 @@ def client_log(user_log):
 
 
 @pytest.fixture
-def user_admin(user_factory):
+def user_admin():
     """Return a super user"""
 
     user = User.objects.create_superuser(username="admin", password="password")

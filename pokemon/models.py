@@ -35,16 +35,11 @@ class Pokemon(models.Model):
         FavoriteObject, on_delete=models.SET_NULL, null=True, default=get_random_object
     )
 
-    team = models.CharField(
-        max_length=100,
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        default=None,
-    )
-
-    team_pk = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
         default=None,
     )
 

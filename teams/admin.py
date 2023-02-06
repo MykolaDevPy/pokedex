@@ -8,6 +8,6 @@ class TeamAdmin(admin.ModelAdmin):
     ordering = ("name",)
     list_per_page = 30
 
-    autocomplete_fields = ("trainer", "pokemon_1", "pokemon_2", "pokemon_3", "pokemon_4", "pokemon_5",)
+    autocomplete_fields = ("trainer",)
 
 admin.site.register(Team, TeamAdmin)

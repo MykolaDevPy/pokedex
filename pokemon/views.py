@@ -67,7 +67,7 @@ class PokemonViewSet(ModelViewSet):
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=["POST"], detail=True, url_path="give_xp")
+    @action(methods=["POST"], detail=True, url_path="give-xp")
     @extend_schema(responses=PokemonSerializer)
     def give_xp(self, request, pk=None):
         """Action to give extra experience points to a pokemon"""
