@@ -1,5 +1,5 @@
 # Hosting 
-https://pokedex-simco.up.railway.app/api/swagger/
+https://pokedex-python.up.railway.app/api/swagger/
 
 # Pokedex-back
 
