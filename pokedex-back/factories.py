@@ -15,6 +15,19 @@ User = get_user_model()
 DEFAULT_PASSWORD = "secretpassword"
 
 
+class UserFactory(DjangoModelFactory):
+    class Meta:
+        model = User
+
+    username = factory.Sequence(lambda n: "username_{0}".format(n))
+    email = factory.Sequence(lambda n: "user{0}@gmail.com".format(n))
+
+    @factory.post_generation
+    def set_password(obj, create, extracted, **kwargs):
+        obj.set_password(DEFAULT_PASSWORD)
+        obj.save()
+
+
 class PokedexCreatureFactory(DjangoModelFactory):
     """Generator of PokedexCreature objects"""
 
@@ -61,6 +74,21 @@ class FavoriteObjectFactory(DjangoModelFactory):
     )
 
 
+class TeamFactory(DjangoModelFactory):
+    """Generator of Team objects"""
+
+    class Meta:
+        model = Team
+
+    name = factory.Sequence(lambda n: f"Team {n + 1}")
+    trainer = factory.SubFactory(UserFactory)
+
+    @factory.post_generation
+    def clean(obj, create, extracted, **kwargs):
+        """Call team model clean method"""
+        obj.clean()
+
+
 class PokemonFactory(DjangoModelFactory):
     """Generator of PokedexCreature objects"""
 
@@ -71,6 +99,7 @@ class PokemonFactory(DjangoModelFactory):
     level = 1
     experience = 0
     favorite_object = factory.SubFactory(FavoriteObjectFactory)
+    team = factory.SubFactory(TeamFactory)
 
     @factory.post_generation
     def clean(obj, create, extracted, **kwargs):
@@ -78,41 +107,8 @@ class PokemonFactory(DjangoModelFactory):
         obj.clean()
 
 
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = User
-
-    username = factory.Sequence(lambda n: "username_{0}".format(n))
-    email = factory.Sequence(lambda n: "user{0}@gmail.com".format(n))
-
-    @factory.post_generation
-    def set_password(obj, create, extracted, **kwargs):
-        obj.set_password(DEFAULT_PASSWORD)
-        obj.save()
-
-
-class TeamFactory(DjangoModelFactory):
-    """Generator of Team objects"""
-
-    class Meta:
-        model = Team
-
-    name = factory.Sequence(lambda n: f"Team {n + 1}")
-    trainer = factory.SubFactory(UserFactory)
-    pokemon_1 = factory.SubFactory(PokemonFactory)
-    pokemon_2 = factory.SubFactory(PokemonFactory)
-    pokemon_3 = factory.SubFactory(PokemonFactory)
-    pokemon_4 = factory.SubFactory(PokemonFactory)
-    pokemon_5 = factory.SubFactory(PokemonFactory)
-
-    @factory.post_generation
-    def clean(obj, create, extracted, **kwargs):
-        """Call team model clean method"""
-        obj.clean()
-
-
+register(UserFactory)
 register(PokedexCreatureFactory)
 register(FavoriteObjectFactory)
-register(PokemonFactory)
-register(UserFactory)
 register(TeamFactory)
+register(PokemonFactory)
