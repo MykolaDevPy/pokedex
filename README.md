@@ -20,10 +20,6 @@ poetry run python manage.py import_csv
 poetry run python manage.py runserver 0.0.0.0:8000
 ```
 
-Up & Running sur le port 8000 !
-
-Pour dev sur ce repository dans les règles de l'art, il faut `poetry run pre-commit install`
-
 ## Informations diverses
 
 - L'authentification est faite par token d'accès + token de refresh
