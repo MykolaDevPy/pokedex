@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "3q@7xs0v_+d5ltnv-0(%$ug!#v1q2(@gqe@leb52k5$#+ya%-%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "True"
+DEBUG = os.getenv("DEBUG") == "False"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = "/var/www/static"
