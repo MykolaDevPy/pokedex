@@ -18,12 +18,11 @@ class PokemonSerializer(serializers.ModelSerializer):
             "nickname",
             "level",
             "experience",
-            "favorite_object",
+            "team",
         )
         read_only_fields = (
             "id",
             "level",
-            "favorite_object",
         )
 
     def validate(self, attrs):
@@ -37,6 +36,8 @@ class PokemonSerializer(serializers.ModelSerializer):
 
 
 class PokemonDetailsSerializer(serializers.ModelSerializer):
+    """Serializer of Pokemon details object"""
+
     pokedex_creature = PokedexCreatureDetailSerializer()
     trainer = UserSerializer()
     favorite_object = FavoriteObjectDetailSerializer()
@@ -51,6 +52,59 @@ class PokemonDetailsSerializer(serializers.ModelSerializer):
             "pokedex_creature",
             "trainer",
             "favorite_object",
+            "team",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
+            "team",
+        )
+
+
+class PokemonTeamDetailsSerializer(serializers.ModelSerializer):
+    """Serializer of Pokemon details object"""
+
+    pokedex_creature = PokedexCreatureDetailSerializer()
+    favorite_object = FavoriteObjectDetailSerializer()
+
+    class Meta:
+        model = Pokemon
+        fields = (
+            "id",
+            "nickname",
+            "level",
+            "experience",
+            "pokedex_creature",
+            "favorite_object",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
+        )
+
+
+
+class PokemonWildSerializer(serializers.ModelSerializer):
+    """Serializer of wild pokemon endpoint"""
+
+    pokedex_creature = PokedexCreatureDetailSerializer()
+    favorite_object = FavoriteObjectDetailSerializer()
+
+    class Meta:
+        model = Pokemon
+        fields = (
+            "id",
+            "level",
+            "experience",
+            "pokedex_creature",
+            "favorite_object",
+        )
+
+        read_only_fields = (
+            "id",
+            "level",
         )
 
 

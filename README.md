@@ -1,8 +1,13 @@
+# Hosting 
+https://pokedex-python.up.railway.app/api/swagger/
+
 # Pokedex-back
+
 
 API de pokedex et d'instanciation de pokemon !
 
 Attrapez-les tous ! ⚾
+
 
 ## How-to install
 

@@ -9,9 +9,23 @@ from pytest_factoryboy import register
 from favorite_object.models import FavoriteObject
 from pokedex.models import PokedexCreature
 from pokemon.models import Pokemon
+from teams.models import Team
 
 User = get_user_model()
 DEFAULT_PASSWORD = "secretpassword"
+
+
+class UserFactory(DjangoModelFactory):
+    class Meta:
+        model = User
+
+    username = factory.Sequence(lambda n: "username_{0}".format(n))
+    email = factory.Sequence(lambda n: "user{0}@gmail.com".format(n))
+
+    @factory.post_generation
+    def set_password(obj, create, extracted, **kwargs):
+        obj.set_password(DEFAULT_PASSWORD)
+        obj.save()
 
 
 class PokedexCreatureFactory(DjangoModelFactory):
@@ -42,7 +56,7 @@ class FavoriteObjectFactory(DjangoModelFactory):
         model = FavoriteObject
 
     name = sample(["Attaque +", "Baie Fraive", "Veste de Combat"], 1)
-    imd_url = sample(
+    img_url = sample(
         [
             "https://www.pokemontrash.com/pokedex/images/items/safety-goggles.png",
             "https://www.pokemontrash.com/pokedex/images/items/assault-vest.png",
@@ -54,9 +68,25 @@ class FavoriteObjectFactory(DjangoModelFactory):
         [
             "Objet à tenir augmentant la puissance des attaques immobilisantes telles que Ligotage ou Étreinte.",
             "Objet à tenir qui annule l’attirance d’un Pokémon. Ne peut être utilisé qu’une fois.",
+            "Objet à utiliser sur un Pokémon. Il augmente un peu son Attaque lors d’une montée de niveau.",
         ],
         1,
     )
+
+
+class TeamFactory(DjangoModelFactory):
+    """Generator of Team objects"""
+
+    class Meta:
+        model = Team
+
+    name = factory.Sequence(lambda n: f"Team {n + 1}")
+    trainer = factory.SubFactory(UserFactory)
+
+    @factory.post_generation
+    def clean(obj, create, extracted, **kwargs):
+        """Call team model clean method"""
+        obj.clean()
 
 
 class PokemonFactory(DjangoModelFactory):
@@ -69,6 +99,7 @@ class PokemonFactory(DjangoModelFactory):
     level = 1
     experience = 0
     favorite_object = factory.SubFactory(FavoriteObjectFactory)
+    team = factory.SubFactory(TeamFactory)
 
     @factory.post_generation
     def clean(obj, create, extracted, **kwargs):
@@ -76,20 +107,8 @@ class PokemonFactory(DjangoModelFactory):
         obj.clean()
 
 
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = User
-
-    username = factory.Sequence(lambda n: "username_{0}".format(n))
-    email = factory.Sequence(lambda n: "user{0}@gmail.com".format(n))
-
-    @factory.post_generation
-    def set_password(obj, create, extracted, **kwargs):
-        obj.set_password(DEFAULT_PASSWORD)
-        obj.save()
-
-
+register(UserFactory)
 register(PokedexCreatureFactory)
 register(FavoriteObjectFactory)
+register(TeamFactory)
 register(PokemonFactory)
-register(UserFactory)

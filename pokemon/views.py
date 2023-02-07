@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from .filters import PokemonFilter
 from .models import Pokemon
@@ -11,6 +12,7 @@ from .permissions import IsOwner
 from .serializers import PokemonDetailsSerializer
 from .serializers import PokemonGiveXPSerializer
 from .serializers import PokemonSerializer
+from .serializers import PokemonWildSerializer
 
 
 @extend_schema_view(
@@ -32,16 +34,15 @@ from .serializers import PokemonSerializer
     ),
 )
 class PokemonViewSet(ModelViewSet):
-    permission_classes = (IsOwner,)
+    permission_classes = (IsOwner, IsAuthenticated)
     serializer_class = PokemonSerializer
     filterset_class = PokemonFilter
 
     def get_queryset(self):
-        """Return the queryset of Pokemon instances based on their trainer"""
+        """Return the queryset of Pokemon instances based on user permissions."""
+
         if self.request.user.is_superuser:
             return Pokemon.objects.all().order_by("pokedex_creature__ref_number")
-        elif self.request.user.is_anonymous:
-            return Pokemon.objects.none()
 
         return Pokemon.objects.filter(trainer=self.request.user.pk)
 
@@ -53,10 +54,24 @@ class PokemonViewSet(ModelViewSet):
 
         return PokemonSerializer
 
-    @action(methods=["POST"], detail=True, url_path="give_xp")
+    @action(methods=["GET"], detail=False, url_path="wild")
+    @extend_schema(responses=PokemonWildSerializer)
+    def wild_pokemon(self, request):
+        """Action to get the wild pokemons"""
+
+        pokemons = Pokemon.objects.filter(trainer=None)
+
+        if pokemons:
+            response_serializer = PokemonWildSerializer(instance=pokemons, many=True)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["POST"], detail=True, url_path="give-xp")
     @extend_schema(responses=PokemonSerializer)
     def give_xp(self, request, pk=None):
         """Action to give extra experience points to a pokemon"""
+
         pokemon: Pokemon = self.get_object()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

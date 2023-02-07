@@ -1,15 +1,10 @@
-from random import choice
-
 from django.conf import settings
 from django.db import models
 
+from .utils import get_random_object
 from favorite_object.models import FavoriteObject
 from pokedex.models import PokedexCreature
-
-
-def get_random_object():
-    """Get a random object from the database"""
-    return FavoriteObject.objects.all().order_by("?").first()
+from teams.models import Team
 
 
 class Pokemon(models.Model):
@@ -37,7 +32,15 @@ class Pokemon(models.Model):
     experience = models.PositiveIntegerField(default=0)
 
     favorite_object = models.ForeignKey(
-        FavoriteObject, on_delete=models.CASCADE, default=get_random_object
+        FavoriteObject, on_delete=models.SET_NULL, null=True, default=get_random_object
+    )
+
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        default=None,
     )
 
     def clean(self):

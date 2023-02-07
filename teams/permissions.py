@@ -1,6 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 
+
 class IsOwner(IsAuthenticated):
     """Check if a user has the given permission"""
 
@@ -9,3 +10,4 @@ class IsOwner(IsAuthenticated):
             return True
         else:
             raise PermissionDenied
+
